@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Illuminate\Support\Facades\Session;
@@ -20,7 +21,9 @@ class OrderCheckout extends Component
     public $orderNumber = null;
     public $showReceipt = false;
     public $receiptContent = '';
-
+    public $subtotal;
+    public $tax;
+    public $total;
     public function mount()
     {
         $this->loadCategories();
@@ -91,7 +94,7 @@ class OrderCheckout extends Component
         foreach ($this->tables as $table) {
             $sessionKey = 'order_table_' . $table->id;
             $sessionOrder = Session::get($sessionKey, []);
-            
+
             if (!empty($sessionOrder)) {
                 if ($table->status !== 'occupied') {
                     $table->update(['status' => 'occupied']);
@@ -102,7 +105,7 @@ class OrderCheckout extends Component
                 }
             }
         }
-        
+
         $this->loadTables();
     }
     private function updateSingleTableStatus($tableId)
@@ -112,7 +115,7 @@ class OrderCheckout extends Component
 
         $sessionKey = 'order_table_' . $tableId;
         $sessionOrder = Session::get($sessionKey, []);
-        
+
         if (!empty($sessionOrder)) {
             if ($table->status !== 'occupied') {
                 $table->update(['status' => 'occupied']);
@@ -122,7 +125,7 @@ class OrderCheckout extends Component
                 $table->update(['status' => 'available']);
             }
         }
-        
+
         $this->loadTables();
     }
     public function addToOrder($productId)
@@ -147,7 +150,6 @@ class OrderCheckout extends Component
         unset($this->orderItems[$productId]);
         $this->saveSessionOrder();
         $this->updateSingleTableStatus($this->selectedTable);
-
     }
 
     protected function saveSessionOrder()
@@ -224,13 +226,17 @@ class OrderCheckout extends Component
         return Product::whereIn('id', $productIds)->get();
     }
 
+
     public function processPayment()
     {
         $productsInOrder = Product::whereIn('id', array_keys($this->orderItems))->get();
         $subtotal = 0;
+
+        // Tính subtotal
         foreach ($productsInOrder as $product) {
             $subtotal += $product->sale_price * $this->orderItems[$product->id];
         }
+
         // $tax = $subtotal * 0.1;
         $tax = 0;
         $total = $subtotal + $tax;
@@ -240,87 +246,63 @@ class OrderCheckout extends Component
             return;
         }
 
-        $order = \App\Models\Order::create([
-            'order_number' => 'ORD-' . time(),
-            'table_id' => $this->selectedTable,
-            'subtotal' => $subtotal,
-            'tax_amount' => $tax,
-            'total_amount' => $total,
-            'cash_received' => $this->paymentMethod === 'cash' ? $this->cashReceived : $total,
-            'change_amount' => $this->paymentMethod === 'cash' ? $this->cashReceived - $total : 0,
-            'status' => 'completed',
-            'payment_status' => 'paid',
-            'completed_at' => now(),
-        ]);
-        $orderNumber = 'ORD-' . str_pad($order->id, 6, '0', STR_PAD_LEFT);
+        // Sử dụng Database Transaction để đảm bảo tính nhất quán
+        DB::beginTransaction();
 
-        // Cập nhật order_number
-        $order->order_number = $orderNumber;
-        $order->save();
-
-        // Lưu order_number vào thuộc tính để hiển thị lên giao diện
-        $this->orderNumber = $orderNumber;
-
-        foreach ($productsInOrder as $product) {
-            \App\Models\OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $product->id,
-                'quantity' => $this->orderItems[$product->id],
-                'unit_price' => $product->sale_price,
-                'total_price' => $product->sale_price * $this->orderItems[$product->id],
+        try {
+            $order = \App\Models\Order::create([
+                'order_number' => 'ORD-' . time(),
+                'table_id' => $this->selectedTable,
+                'subtotal' => $subtotal,
+                'tax_amount' => $tax,
+                'total_amount' => $total,
+                'cash_received' => $this->paymentMethod === 'cash' ? $this->cashReceived : $total,
+                'change_amount' => $this->paymentMethod === 'cash' ? $this->cashReceived - $total : 0,
+                'status' => 'completed',
+                'payment_status' => 'paid',
+                'completed_at' => now(),
             ]);
+
+            $orderNumber = 'ORD-' . str_pad($order->id, 6, '0', STR_PAD_LEFT);
+
+            $order->order_number = $orderNumber;
+            $order->save();
+
+            $this->orderNumber = $orderNumber;
+
+            foreach ($productsInOrder as $product) {
+                $quantityOrdered = $this->orderItems[$product->id];
+
+                \App\Models\OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $product->id,
+                    'quantity' => $quantityOrdered,
+                    'unit_price' => $product->sale_price,
+                    'total_price' => $product->sale_price * $quantityOrdered,
+                ]);
+
+                $ingredient = \App\Models\Ingredient::where('product_id', $product->id)->first();
+
+                if ($ingredient && $ingredient->current_stock >= $quantityOrdered) {
+                    $ingredient->current_stock -= $quantityOrdered;
+                    $ingredient->save();
+                }
+            }
+
+            DB::commit();
+
+            $sessionKey = 'order_table_' . $this->selectedTable;
+            Session::forget($sessionKey);
+            $this->clearOrder();
+            $this->selectedTable = null;
+
+            $this->dispatch('notify', type: 'success', message: 'Thanh toán thành công!');
+            $this->dispatch('closePaymentModal');
+        } catch (\Exception $e) {
+            DB::rollback();
+            $this->dispatch('notify', type: 'error', message: 'Có lỗi xảy ra khi xử lý thanh toán!');
         }
-
-        $sessionKey = 'order_table_' . $this->selectedTable;
-        Session::forget($sessionKey);
-        $this->clearOrder();
-        $this->selectedTable = null;
-
-        $this->dispatch('notify', type: 'success', message: 'Thanh toán thành công!');
-        $this->dispatch('closePaymentModal');
     }
-
-    // private function generateReceiptContent($tableName, $productsInOrder, $subtotal, $tax, $total)
-    // {
-    //     $content = "";
-    //     $content .= "========================================\n";
-    //     $content .= "           NHA HANG ABC\n";
-    //     $content .= "      123 Duong ABC, Quan 1, TP.HCM\n";
-    //     $content .= "         Hotline: 0123 456 789\n";
-    //     $content .= "========================================\n";
-    //     $content .= "\n";
-    //     $content .= "Hoa don: " . $this->orderNumber . "\n";
-    //     $content .= "Ban: " . $tableName . "\n";
-    //     $content .= "Ngay: " . now()->format('d/m/Y H:i:s') . "\n";
-    //     $content .= "Nhan vien: Admin\n";
-    //     $content .= "\n";
-    //     $content .= "----------------------------------------\n";
-    //     $content .= "MON AN\n";
-    //     $content .= "----------------------------------------\n";
-
-    //     foreach ($productsInOrder as $product) {
-    //         $quantity = $this->orderItems[$product->id];
-    //         $itemTotal = $product->sale_price * $quantity;
-
-    //         $content .= sprintf("%-20s x%d\n", $product->name, $quantity);
-    //         $content .= sprintf("%20s %s\n", number_format($product->sale_price) . "d", number_format($itemTotal) . "d");
-    //         $content .= "\n";
-    //     }
-
-    //     $content .= "----------------------------------------\n";
-    //     $content .= sprintf("%-20s %s\n", "Tam tinh:", number_format($subtotal) . "d");
-    //     $content .= sprintf("%-20s %s\n", "Thue (10%):", number_format($tax) . "d");
-    //     $content .= "----------------------------------------\n";
-    //     $content .= sprintf("%-20s %s\n", "TONG CONG:", number_format($total) . "d");
-    //     $content .= "========================================\n";
-    //     $content .= "\n";
-    //     $content .= "           Cam on quy khach!\n";
-    //     $content .= "            Hen gap lai!\n";
-    //     $content .= "\n";
-    //     $content .= "========================================\n";
-
-    //     return $content;
-    // }
 
     public function closeReceipt()
     {

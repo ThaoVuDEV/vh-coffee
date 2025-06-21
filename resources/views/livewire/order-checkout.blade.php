@@ -244,6 +244,8 @@
         cashReceived: 0,
         change: 0,
         exactPayment: false,
+        selectedDenomination: '', // Mệnh giá được chọn
+        showManualInput: false, // Hiển thị input nhập tay
     
         init() {
             // Lắng nghe event từ Livewire
@@ -262,6 +264,8 @@
                 this.change = 0;
                 this.paymentMethod = 'cash';
                 this.exactPayment = false;
+                this.selectedDenomination = '';
+                this.showManualInput = false;
     
                 console.log('Modal data set:', {
                     table: this.table,
@@ -288,13 +292,69 @@
             });
         },
 
+        // Danh sách mệnh giá tiền Việt Nam
+        getDenominations() {
+            const baseAmounts = [
+                10000, 20000, 50000, 100000, 200000, 500000
+            ];
+            
+            // Tìm mệnh giá gần nhất >= tổng tiền
+            const denominations = [];
+            
+            // Thêm các mệnh giá >= total
+            baseAmounts.forEach(amount => {
+                if (amount >= this.total) {
+                    denominations.push(amount);
+                }
+            });
+            
+            // Nếu không có mệnh giá nào >= total, thêm mệnh giá cao nhất
+            if (denominations.length === 0) {
+                denominations.push(500000);
+            }
+            
+            // Thêm một số mệnh giá cao hơn để khách có thể trả
+            const maxDenomination = Math.max(...baseAmounts);
+            if (this.total > maxDenomination) {
+                // Làm tròn lên đến triệu gần nhất
+                const roundedMillion = Math.ceil(this.total / 1000000) * 1000000;
+                denominations.push(roundedMillion);
+                if (roundedMillion < this.total * 2) {
+                    denominations.push(roundedMillion * 2);
+                }
+            }
+            
+            return [...new Set(denominations)].sort((a, b) => a - b);
+        },
+
         handleExactPayment() {
             if (this.exactPayment) {
                 this.cashReceived = this.total;
+                this.selectedDenomination = '';
+                this.showManualInput = false;
                 // Đồng bộ với Livewire ngay lập tức
                 $wire.set('cashReceived', this.total);
             } else {
                 this.cashReceived = 0;
+                $wire.set('cashReceived', 0);
+            }
+            this.calculateChange();
+        },
+
+        handleDenominationChange() {
+            if (this.selectedDenomination === 'manual') {
+                this.showManualInput = true;
+                this.cashReceived = 0;
+                this.exactPayment = false;
+            } else if (this.selectedDenomination) {
+                this.showManualInput = false;
+                this.cashReceived = parseInt(this.selectedDenomination);
+                this.exactPayment = (this.cashReceived === this.total);
+                $wire.set('cashReceived', this.cashReceived);
+            } else {
+                this.showManualInput = false;
+                this.cashReceived = 0;
+                this.exactPayment = false;
                 $wire.set('cashReceived', 0);
             }
             this.calculateChange();
@@ -314,6 +374,19 @@
             this.calculateChange();
             // Cập nhật trạng thái exactPayment
             this.exactPayment = (this.cashReceived === this.total);
+            // Reset denomination khi nhập tay
+            if (this.showManualInput) {
+                this.selectedDenomination = 'manual';
+            }
+        },
+
+        resetPaymentInputs() {
+            this.selectedDenomination = '';
+            this.showManualInput = false;
+            this.cashReceived = 0;
+            this.exactPayment = false;
+            $wire.set('cashReceived', 0);
+            this.calculateChange();
         },
     
         formatNumber(number) {
@@ -369,7 +442,7 @@
             <!-- Payment method -->
             <div class="mb-4">
                 <label class="block mb-2 font-semibold text-gray-700">🏦 Phương thức thanh toán</label>
-                <select x-model="paymentMethod" wire:model="paymentMethod" @change="calculateChange()"
+                <select x-model="paymentMethod" wire:model="paymentMethod" @change="calculateChange(); resetPaymentInputs();"
                     class="w-full border rounded-lg p-2 focus:border-amber-500 focus:outline-none">
                     <option value="cash">💵 Tiền mặt</option>
                     <option value="transfer">🏧 Chuyển khoản</option>
@@ -384,18 +457,36 @@
                         <input type="checkbox" x-model="exactPayment" @change="handleExactPayment()"
                             class="w-4 h-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500 focus:ring-2">
                         <span class="ml-2 text-sm font-medium text-gray-700">
-                            ✅ Khách trả đúng <span x-text="formatNumber(total) + ' ₫'" class="font-bold text-amber-600"></span>
+                             Khách trả đúng <span x-text="formatNumber(total) + ' ₫'" class="font-bold text-amber-600"></span>
                         </span>
                     </label>
                 </div>
 
-                <label class="block mb-2 font-semibold text-gray-700">💸 Tiền khách đưa</label>
-                <input type="number" x-model.number="cashReceived"
-                    @input="updateCashReceived()"
-                    :disabled="exactPayment"
-                    :class="exactPayment ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'"
-                    class="w-full border rounded-lg p-2 focus:border-amber-500 focus:outline-none"
-                    placeholder="Nhập số tiền khách đưa" :min="total" />
+                <!-- Chọn mệnh giá tiền -->
+                <div class="mb-4" x-show="!exactPayment">
+                    <label class="block mb-2 font-semibold text-gray-700">💴 Chọn mệnh giá</label>
+                    <select x-model="selectedDenomination" @change="handleDenominationChange()"
+                        class="w-full border rounded-lg p-2 focus:border-amber-500 focus:outline-none">
+                        <option value="">-- Chọn mệnh giá tiền --</option>
+                        <template x-for="amount in getDenominations()" :key="amount">
+                            <option :value="amount" x-text="formatNumber(amount) + ' ₫'"></option>
+                        </template>
+                        <option value="manual">✏️ Nhập số khác</option>
+                    </select>
+                </div>
+
+                <!-- Input nhập tay -->
+                <div x-show="showManualInput || exactPayment" class="mb-4">
+                    <label class="block mb-2 font-semibold text-gray-700">💸 Tiền khách đưa</label>
+                    <input type="number" x-model.number="cashReceived"
+                        @input="updateCashReceived()"
+                        :disabled="exactPayment"
+                        :class="exactPayment ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'"
+                        class="w-full border rounded-lg p-2 focus:border-amber-500 focus:outline-none"
+                        placeholder="Nhập số tiền khách đưa" :min="total" />
+                </div>
+
+                <!-- Hiển thị tiền thối -->
                 <div class="mt-2 p-2 rounded-lg"
                     :class="cashReceived >= total ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'">
                     <span class="font-medium">💰 Tiền thối: </span>
@@ -453,57 +544,7 @@
             </div>
         </div>
     </div>
-    <!-- Hidden Receipt Template for Printing -->
-    {{-- <div id="receiptTemplate" style="display: none;">
-        <div style="width: 300px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.4;">
-            <div
-                style="text-align: center; border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 10px;">
-                <h2 style="margin: 0; font-size: 16px;">🍽️ NHÀ HÀNG ABC</h2>
-                <p style="margin: 5px 0;">123 Đường ABC, Quận 1, TP.HCM</p>
-                <p style="margin: 5px 0;">Hotline: 0123 456 789</p>
-            </div>
 
-            <div style="margin-bottom: 10px;">
-                <p style="margin: 2px 0;"><strong>Hóa đơn #<span id="receiptOrderNumber">001</span></strong></p>
-                <p style="margin: 2px 0;">Bàn: <span id="receiptTableName">-</span></p>
-                <p style="margin: 2px 0;">Ngày: <span id="receiptDate">-</span></p>
-                <p style="margin: 2px 0;">Nhân viên: Admin</p>
-            </div>
-
-            <div style="border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 10px 0; margin: 10px 0;">
-                <div id="receiptItems"></div>
-            </div>
-
-            <div style="margin-bottom: 10px;">
-                <div style="display: flex; justify-content: space-between;">
-                    <span>Tạm tính:</span>
-                    <span id="receiptSubtotal">0 ₫</span>
-                </div>
-                <div style="display: flex; justify-content: space-between;">
-                    <span>Thuế (10%):</span>
-                    <span id="receiptTax">0 ₫</span>
-                </div>
-                <div
-                    style="display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; border-top: 1px solid #000; padding-top: 5px; margin-top: 5px;">
-                    <span>TỔNG CỘNG:</span>
-                    <span id="receiptTotal">0 ₫</span>
-                </div>
-            </div>
-
-            <div style="text-align: center; border-top: 1px dashed #000; padding-top: 10px;">
-                <p style="margin: 5px 0;">🙏 Cảm ơn quý khách!</p>
-                <p style="margin: 5px 0;">Hẹn gặp lại!</p>
-            </div>
-        </div>
-    </div>
-    <div id="receipt-preview"
-        style="display:none; position:fixed; top:10%; left:50%; transform:translateX(-50%); width:420px; background:#fff; border:1px solid #ccc; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.2); padding:20px; z-index:1000; overflow-y:auto; max-height:80vh;">
-        <button onclick="closePreview()" style="float:right; margin-bottom:10px;">✖ Đóng</button>
-        <div id="receipt-content"></div>
-    </div>
-    <div id="overlay"
-        style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:999;">
-    </div> --}}
 
 </div>
 
