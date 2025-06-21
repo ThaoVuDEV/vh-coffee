@@ -246,6 +246,7 @@
         exactPayment: false,
         selectedDenomination: '', // Mệnh giá được chọn
         showManualInput: false, // Hiển thị input nhập tay
+        showNumpad: false, // Hiển thị bàn phím số
     
         init() {
             // Lắng nghe event từ Livewire
@@ -266,6 +267,7 @@
                 this.exactPayment = false;
                 this.selectedDenomination = '';
                 this.showManualInput = false;
+                this.showNumpad = false;
     
                 console.log('Modal data set:', {
                     table: this.table,
@@ -332,6 +334,7 @@
                 this.cashReceived = this.total;
                 this.selectedDenomination = '';
                 this.showManualInput = false;
+                this.showNumpad = false;
                 // Đồng bộ với Livewire ngay lập tức
                 $wire.set('cashReceived', this.total);
             } else {
@@ -344,20 +347,55 @@
         handleDenominationChange() {
             if (this.selectedDenomination === 'manual') {
                 this.showManualInput = true;
+                this.showNumpad = true;
                 this.cashReceived = 0;
                 this.exactPayment = false;
+                // Tự động focus vào input sau khi DOM cập nhật
+                this.$nextTick(() => {
+                    const input = this.$refs.cashInput;
+                    if (input) {
+                        input.focus();
+                    }
+                });
             } else if (this.selectedDenomination) {
                 this.showManualInput = false;
+                this.showNumpad = false;
                 this.cashReceived = parseInt(this.selectedDenomination);
                 this.exactPayment = (this.cashReceived === this.total);
                 $wire.set('cashReceived', this.cashReceived);
             } else {
                 this.showManualInput = false;
+                this.showNumpad = false;
                 this.cashReceived = 0;
                 this.exactPayment = false;
                 $wire.set('cashReceived', 0);
             }
             this.calculateChange();
+        },
+
+        // Thêm số từ bàn phím
+        addNumber(num) {
+            const currentValue = this.cashReceived.toString();
+            const newValue = currentValue === '0' ? num.toString() : currentValue + num.toString();
+            this.cashReceived = parseInt(newValue) || 0;
+            this.updateCashReceived();
+        },
+
+        // Xóa một số
+        deleteNumber() {
+            const currentValue = this.cashReceived.toString();
+            if (currentValue.length > 1) {
+                this.cashReceived = parseInt(currentValue.slice(0, -1)) || 0;
+            } else {
+                this.cashReceived = 0;
+            }
+            this.updateCashReceived();
+        },
+
+        // Xóa tất cả
+        clearAll() {
+            this.cashReceived = 0;
+            this.updateCashReceived();
         },
     
         calculateChange() {
@@ -383,6 +421,7 @@
         resetPaymentInputs() {
             this.selectedDenomination = '';
             this.showManualInput = false;
+            this.showNumpad = false;
             this.cashReceived = 0;
             this.exactPayment = false;
             $wire.set('cashReceived', 0);
@@ -397,7 +436,9 @@
         x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
-        <div class="bg-white p-6 rounded-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto shadow-2xl">
+        
+        <!-- Main Modal -->
+        <div class="bg-white p-6 rounded-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto shadow-2xl relative">
             <h2 class="text-xl font-bold mb-4 text-amber-800">
                 💳 Thanh toán - Bàn <span x-text="tableName" class="text-amber-600"></span>
             </h2>
@@ -428,10 +469,6 @@
                         <span>Tạm tính:</span>
                         <span x-text="formatNumber(subtotal) + ' ₫'"></span>
                     </div>
-                    {{-- <div class="flex justify-between text-gray-600">
-                        <span>Thuế (10%):</span>
-                        <span x-text="formatNumber(tax) + ' ₫'"></span>
-                    </div> --}}
                     <div class="flex justify-between text-lg font-bold text-amber-800 border-t pt-2">
                         <span>💰 TỔNG CỘNG:</span>
                         <span x-text="formatNumber(total) + ' ₫'" class="text-xl"></span>
@@ -478,12 +515,23 @@
                 <!-- Input nhập tay -->
                 <div x-show="showManualInput || exactPayment" class="mb-4">
                     <label class="block mb-2 font-semibold text-gray-700">💸 Tiền khách đưa</label>
-                    <input type="number" x-model.number="cashReceived"
-                        @input="updateCashReceived()"
-                        :disabled="exactPayment"
-                        :class="exactPayment ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'"
-                        class="w-full border rounded-lg p-2 focus:border-amber-500 focus:outline-none"
-                        placeholder="Nhập số tiền khách đưa" :min="total" />
+                    <div class="flex space-x-2">
+                        <input type="number" x-model.number="cashReceived"
+                            x-ref="cashInput"
+                            @input="updateCashReceived()"
+                            :disabled="exactPayment"
+                            :class="exactPayment ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'"
+                            class="flex-1 border rounded-lg p-2 focus:border-amber-500 focus:outline-none"
+                            placeholder="Nhập số tiền khách đưa" :min="total" />
+                        
+                        <!-- Nút hiện/ẩn bàn phím số -->
+                        <button type="button" x-show="showManualInput && !exactPayment"
+                            @click="showNumpad = !showNumpad"
+                            :class="showNumpad ? 'bg-amber-600 text-white' : 'bg-gray-200 text-gray-700'"
+                            class="px-3 py-2 rounded-lg transition-colors hover:bg-amber-700">
+                            🔢
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Hiển thị tiền thối -->
@@ -541,6 +589,88 @@
                         </span>
                     </button>
                 </div>
+            </div>
+        </div>
+
+        <!-- Numpad Modal -->
+        <div x-show="showNumpad" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 scale-95 translate-x-4" 
+             x-transition:enter-end="opacity-100 scale-100 translate-x-0"
+             x-transition:leave="transition ease-in duration-100"
+             x-transition:leave-start="opacity-100 scale-100 translate-x-0" 
+             x-transition:leave-end="opacity-0 scale-95 translate-x-4"
+             class="  bg-white border-2 border-amber-300 rounded-lg shadow-xl p-3 z-10"
+             style="width: 200px;">
+            
+            <!-- Header bàn phím -->
+            <div class="flex justify-between items-center mb-3">
+                <span class="text-sm font-semibold text-gray-700">🔢 Bàn phím số</span>
+                <button @click="showNumpad = false" 
+                        class="text-gray-400 hover:text-gray-600 text-lg">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Hiển thị số hiện tại -->
+            <div class="bg-gray-100 p-2 rounded text-center mb-3">
+                <span x-text="formatNumber(cashReceived) + ' ₫'" 
+                      class="font-bold text-amber-700"></span>
+            </div>
+
+            <!-- Grid bàn phím -->
+            <div class="grid grid-cols-3 gap-2">
+                <!-- Hàng 1: 1,2,3 -->
+                <template x-for="i in 3" :key="i">
+                    <button @click="addNumber(i)" 
+                            class="bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded p-2 font-semibold text-blue-700 transition-colors">
+                        <span x-text="i"></span>
+                    </button>
+                </template>
+
+                <!-- Hàng 2: 4,5,6 -->
+                <template x-for="i in 3" :key="i + 3">
+                    <button @click="addNumber(i + 3)" 
+                            class="bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded p-2 font-semibold text-blue-700 transition-colors">
+                        <span x-text="i + 3"></span>
+                    </button>
+                </template>
+
+                <!-- Hàng 3: 7,8,9 -->
+                <template x-for="i in 3" :key="i + 6">
+                    <button @click="addNumber(i + 6)" 
+                            class="bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded p-2 font-semibold text-blue-700 transition-colors">
+                        <span x-text="i + 6"></span>
+                    </button>
+                </template>
+
+                <!-- Hàng 4: Clear, 0, Delete -->
+                <button @click="clearAll()" 
+                        class="bg-red-50 hover:bg-red-100 border border-red-200 rounded p-2 font-semibold text-red-700 transition-colors text-xs">
+                    CLR
+                </button>
+                
+                <button @click="addNumber(0)" 
+                        class="bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded p-2 font-semibold text-blue-700 transition-colors">
+                    0
+                </button>
+                
+                <button @click="deleteNumber()" 
+                        class="bg-orange-50 hover:bg-orange-100 border border-orange-200 rounded p-2 font-semibold text-orange-700 transition-colors text-xs">
+                    ⌫
+                </button>
+            </div>
+
+            <!-- Nút thêm số 0 -->
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <button @click="addNumber('00')" 
+                        class="bg-green-50 hover:bg-green-100 border border-green-200 rounded p-2 font-semibold text-green-700 transition-colors">
+                    00
+                </button>
+                <button @click="addNumber('000')" 
+                        class="bg-green-50 hover:bg-green-100 border border-green-200 rounded p-2 font-semibold text-green-700 transition-colors">
+                    000
+                </button>
             </div>
         </div>
     </div>

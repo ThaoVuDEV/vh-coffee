@@ -109,7 +109,7 @@ class AdminIngredient extends Component
         $this->unit_price = $ingredient->unit_price;
         $this->supplier_id = $ingredient->supplier_id;
         $this->status = $ingredient->status;
-          $this->product_id = $ingredient->product_id;
+        $this->product_id = $ingredient->product_id;
         $this->showModal = true;
         $this->editMode = true;
     }
@@ -190,7 +190,6 @@ class AdminIngredient extends Component
     private function resetForm()
     {
         $this->name = '';
-        $this->code = '';
         $this->description = '';
         $this->unit = '';
         $this->current_stock = 0;

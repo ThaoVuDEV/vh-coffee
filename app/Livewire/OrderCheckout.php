@@ -21,9 +21,7 @@ class OrderCheckout extends Component
     public $orderNumber = null;
     public $showReceipt = false;
     public $receiptContent = '';
-    public $subtotal;
-    public $tax;
-    public $total;
+ 
     public function mount()
     {
         $this->loadCategories();
