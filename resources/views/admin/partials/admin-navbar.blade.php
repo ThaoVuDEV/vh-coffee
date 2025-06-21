@@ -8,11 +8,11 @@
         </a>
 
         <!-- Đơn hàng -->
-        <a href="#"
+        {{-- <a href="#"
             class="nav-link flex items-center space-x-3 px-3 py-2 text-gray-600 hover:text-coffee-700 hover:bg-coffee-50 rounded-lg transition-colors text-sm">
             <span>📋</span>
             <span>Đơn hàng hôm nay</span>
-        </a>
+        </a> --}}
 
         <!-- Quản lý sản phẩm -->
         <a href="{{ route('admin.product') }}"
@@ -40,11 +40,11 @@
             <span>Nhà cung cấp</span>
         </a>
         <!-- Quản lý nhân viên -->
-        <a href="#"
+        {{-- <a href="#"
             class="nav-link flex items-center space-x-3 px-3 py-2 text-gray-600 hover:text-coffee-700 hover:bg-coffee-50 rounded-lg transition-colors text-sm">
             <span>👥</span>
             <span>Nhân viên & ca làm</span>
-        </a>
+        </a> --}}
 
         <!-- Nguyên liệu -->
         <a href="{{route('admin.ingredients')}}"
@@ -54,18 +54,18 @@
         </a>
 
         <!-- Thống kê -->
-        <a href="#"
+        {{-- <a href="#"
             class="nav-link flex items-center space-x-3 px-3 py-2 text-gray-600 hover:text-coffee-700 hover:bg-coffee-50 rounded-lg transition-colors text-sm">
             <span>📈</span>
             <span>Thống kê</span>
-        </a>
+        </a> --}}
 
         <!-- Cài đặt -->
-        <a href="#"
+        {{-- <a href="#"
             class="nav-link flex items-center space-x-3 px-3 py-2 text-gray-600 hover:text-coffee-700 hover:bg-coffee-50 rounded-lg transition-colors text-sm">
             <span>⚙️</span>
             <span>Cài đặt hệ thống</span>
-        </a>
+        </a> --}}
 
     </div>
 </nav>
