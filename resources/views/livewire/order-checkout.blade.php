@@ -1,104 +1,124 @@
 <div class="container mx-auto px-4 py-6">
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-140px)]">
 
-        <!-- Phần chọn bàn -->
-        <div class="lg:col-span-1 bg-white rounded-2xl shadow-xl p-6 overflow-y-auto">
+        <div class="lg:col-span-2 bg-white rounded-2xl shadow-xl p-6 overflow-y-auto">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-bold text-amber-800">Chọn bàn</h2>
-                <div class="flex space-x-2">
-                    <div class="w-3 h-3 bg-green-400 rounded-full"></div>
-                    <span class="text-xs text-gray-600">Trống</span>
-                    <div class="w-3 h-3 bg-red-400 rounded-full ml-2"></div>
-                    <span class="text-xs text-gray-600">Có khách</span>
-                    <div class="w-3 h-3 bg-yellow-400 rounded-full ml-2"></div>
-                    <span class="text-xs text-gray-600">Đặt trước</span>
+                <h2 class="text-2xl font-bold text-amber-800">🪑 CHỌN BÀN</h2>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-4 h-4 bg-green-400 rounded-full"></div>
+                        <span class="text-sm text-gray-600 font-medium">Trống</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-4 h-4 bg-red-400 rounded-full"></div>
+                        <span class="text-sm text-gray-600 font-medium">Có khách</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4">
                 @foreach ($tables as $table)
-                    <div class="border-2 rounded-lg p-4 cursor-pointer hover:shadow-lg transition-all duration-300 text-center
-                    {{ $selectedTable == $table->id ? 'border-amber-600 bg-amber-100' : '' }}
+                    <div class="relative border-2 rounded-xl p-6 cursor-pointer hover:shadow-xl transition-all duration-300 text-center
+                    {{ $selectedTable == $table->id ? 'border-amber-600 bg-amber-100 ring-4 ring-amber-200' : '' }}
                     {{ $table->status == 'available' ? 'border-green-300 bg-green-50' : '' }}
                     {{ $table->status == 'occupied' ? 'border-red-300 bg-red-50' : '' }}
                     {{ $table->status == 'reserved' ? 'border-yellow-300 bg-yellow-50' : '' }}"
                         wire:click="selectTable({{ $table->id }})">
-                        <div class="text-2xl mb-2">🪑</div>
-                        <div class="font-semibold">{{ $table->name }}</div>
-                        <div class="text-xs text-gray-600">{{ $table->capacity }} chỗ</div>
-                        <div class="text-xs mt-1">
+
+                        <!-- Icon bàn lớn hơn -->
+                        <div class="text-4xl mb-3">
+                            {{ $table->status == 'available' ? '🪑' : ($table->status == 'occupied' ? '🍽️' : '📅') }}
+                        </div>
+
+                        <!-- Tên bàn to hơn -->
+                        <div class="font-bold text-lg mb-2">{{ $table->name }}</div>
+
+                        <!-- Sức chứa -->
+                        <div class="text-sm text-gray-600 mb-3">{{ $table->capacity }} chỗ</div>
+
+                        <!-- Status badge -->
+                        <div class="text-xs">
                             <span
-                                class="px-2 py-1 rounded-full text-white text-xs
-                        {{ $table->status == 'available' ? 'bg-green-400' : '' }}
-                        {{ $table->status == 'occupied' ? 'bg-red-400' : '' }}
-                        {{ $table->status == 'reserved' ? 'bg-yellow-400' : '' }}">
+                                class="px-3 py-1 rounded-full text-white text-xs font-semibold
+                        {{ $table->status == 'available' ? 'bg-green-500' : '' }}
+                        {{ $table->status == 'occupied' ? 'bg-red-500' : '' }}
+                        {{ $table->status == 'reserved' ? 'bg-yellow-500' : '' }}">
                                 {{ $table->status_text }}
                             </span>
                         </div>
+
+                        <!-- THÊM: Nút thanh toán cho bàn có khách -->
+                        @if ($table->status == 'occupied' && isset($tableOrders[$table->id]) && !empty($tableOrders[$table->id]))
+                            <div class="mt-3">
+                                <button wire:click.stop="checkout({{ $table->id }})"
+                                    class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 px-3 rounded-lg text-xs font-semibold transition-colors">
+                                    💳 Thanh toán
+                                </button>
+                            </div>
+                        @endif
+
+                        <!-- Badge hiển thị nếu bàn được chọn -->
+                        @if ($selectedTable == $table->id)
+                            <div
+                                class="absolute -top-2 -right-2 bg-amber-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                                ✓
+                            </div>
+                        @endif
                     </div>
                 @endforeach
             </div>
+
+
         </div>
 
-        <!-- Phần menu -->
-        <div class="lg:col-span-2 bg-white rounded-2xl shadow-xl p-6 overflow-y-auto">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-bold text-amber-800">MENU</h2>
-                <div class="px-4 py-2 bg-amber-100 rounded-lg">
-                    <span class="text-amber-800 font-semibold">
-                        @if ($selectedTable)
-                            @php
-                                $selectedTableInfo = $tables->find($selectedTable);
-                            @endphp
-                            {{ $selectedTableInfo ? $selectedTableInfo->name : 'Bàn không tồn tại' }}
-                        @else
-                            Chưa chọn bàn
-                        @endif
-                    </span>
-                </div>
+        <!-- Phần menu - THAY ĐỔI: lg:col-span-1 (thu nhỏ lại) -->
+        <div class="lg:col-span-1 bg-white rounded-2xl shadow-xl p-4 overflow-y-auto">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-amber-800">📋 MENU</h2>
+                <!-- Ẩn thông tin bàn ở đây vì đã hiển thị ở phần chọn bàn -->
             </div>
 
-            <!-- Category tabs -->
-            <div class="flex flex-wrap gap-2 mb-6">
+            <!-- Category tabs - thu nhỏ -->
+            <div class="flex flex-wrap gap-1 mb-4">
                 <button
-                    class="category-tab {{ $selectedCategory === 0 ? 'active bg-amber-600 text-white' : 'bg-gray-200 text-gray-700' }} px-4 py-2 rounded-lg hover:bg-amber-700 transition-colors"
+                    class="category-tab {{ $selectedCategory === 0 ? 'active bg-amber-600 text-white' : 'bg-gray-200 text-gray-700' }} px-2 py-1 rounded text-xs hover:bg-amber-700 transition-colors"
                     wire:click="filterCategory(0)">
                     All
                 </button>
 
                 @foreach ($categories as $category)
                     <button
-                        class="category-tab {{ $selectedCategory === $category['id'] ? 'active bg-amber-600 text-white' : 'bg-gray-200 text-gray-700' }} px-4 py-2 rounded-lg hover:bg-amber-700 transition-colors"
+                        class="category-tab {{ $selectedCategory === $category['id'] ? 'active bg-amber-600 text-white' : 'bg-gray-200 text-gray-700' }} px-2 py-1 rounded text-xs hover:bg-amber-700 transition-colors"
                         wire:click="filterCategory({{ $category['id'] }})">
                         {{ ucfirst($category['name']) }}
                     </button>
                 @endforeach
             </div>
 
-            <!-- Menu grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" id="menuGrid">
+            <!-- Menu grid - thu nhỏ -->
+            <div class="grid grid-cols-2 gap-3" id="menuGrid">
                 @foreach ($menuItems as $item)
-                    <div class="border rounded-xl p-4 cursor-pointer hover:shadow-xl transition-all duration-300 bg-white"
+                    <div class="border rounded-lg p-3 cursor-pointer hover:shadow-lg transition-all duration-300 bg-white"
                         wire:click="addToOrder({{ $item['id'] }})">
 
-                        {{-- Ảnh món ăn --}}
+                        {{-- Ảnh món ăn - nhỏ hơn --}}
                         <img src="{{ asset('storage/' . $item['image']) }}" alt="{{ $item['name'] }}"
-                            class="mb-3 w-full h-40 object-cover rounded-lg" />
+                            class="mb-2 w-full h-24 object-cover rounded-lg" />
 
-                        {{-- Tên và giá --}}
-                        <div class="flex justify-between items-center">
-                            <div class="font-semibold text-base text-gray-800">{{ $item['name'] }}</div>
-                            <div class="text-amber-700 font-bold text-sm">{{ number_format($item['sale_price']) }} ₫
+                        {{-- Tên và giá - thu nhỏ --}}
+                        <div class="text-center">
+                            <div class="font-semibold text-sm text-gray-800 mb-1">{{ $item['name'] }}</div>
+                            <div class="text-amber-700 font-bold text-xs">{{ number_format($item['sale_price']) }} ₫
                             </div>
                         </div>
                     </div>
                 @endforeach
             </div>
-
         </div>
 
-        <!-- Phần đơn hàng -->
+        <!-- Phần đơn hàng - giữ nguyên -->
         <div class="lg:col-span-1 bg-white rounded-2xl shadow-xl p-6 flex flex-col">
+            <!-- Nội dung đơn hàng giữ nguyên như cũ -->
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-xl font-bold text-amber-800">ĐƠN HÀNG</h3>
                 <span class="bg-amber-600 text-white px-3 py-1 rounded-lg font-semibold" id="orderNumber">
@@ -116,7 +136,7 @@
                     <div class="space-y-3">
                         @foreach ($productsInOrder as $product)
                             <div class="border border-gray-200 rounded-lg p-3 bg-gray-50">
-                                <!-- Tên món và giá -->
+                                <!-- Nội dung giữ nguyên như cũ -->
                                 <div class="flex justify-between items-center mb-2">
                                     <div class="font-medium text-gray-800">{{ $product->name }}</div>
                                     <div class="text-amber-700 font-semibold text-sm">
@@ -124,20 +144,16 @@
                                     </div>
                                 </div>
 
-                                <!-- Điều khiển số lượng và tổng tiền -->
                                 <div class="flex justify-between items-center">
                                     <div class="flex items-center space-x-2">
-                                        <!-- Nút giảm -->
                                         <button wire:click="decreaseQuantity({{ $product->id }})"
                                             class="w-8 h-8 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center text-lg font-bold transition-colors">
                                             −
                                         </button>
 
-                                        <!-- Hiển thị số lượng -->
                                         <span
                                             class="w-8 text-center font-semibold text-lg">{{ $orderItems[$product->id] }}</span>
 
-                                        <!-- Nút tăng -->
                                         <button wire:click="increaseQuantity({{ $product->id }})"
                                             class="w-8 h-8 rounded-full bg-green-500 hover:bg-green-600 text-white flex items-center justify-center text-lg font-bold transition-colors">
                                             +
@@ -145,12 +161,10 @@
                                     </div>
 
                                     <div class="flex items-center space-x-2">
-                                        <!-- Tổng tiền cho món này -->
                                         <span class="font-bold text-amber-700">
                                             {{ number_format($product->sale_price * $orderItems[$product->id]) }} ₫
                                         </span>
 
-                                        <!-- Nút xóa hoàn toàn -->
                                         <button wire:click="removeFromOrder({{ $product->id }})"
                                             class="w-8 h-8 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center text-sm font-bold transition-colors">
                                             ×
@@ -171,10 +185,6 @@
                             <span>Tạm tính:</span>
                             <span>{{ number_format($subtotal) }} ₫</span>
                         </div>
-                        {{-- <div class="flex justify-between text-gray-600">
-                            <span>Thuế (10%):</span>
-                            <span>{{ number_format($tax) }} ₫</span>
-                        </div> --}}
                         <div class="flex justify-between text-lg font-bold text-amber-800 border-t pt-2">
                             <span>TỔNG CỘNG:</span>
                             <span>{{ number_format($total) }} ₫</span>
@@ -183,29 +193,31 @@
                 </div>
             @endif
 
-            <!-- Action buttons -->
+            <!-- Action buttons - Chỉ hiển thị thanh toán khi có món và đã chọn bàn -->
             <div class="space-y-3">
-                <button wire:click="checkout"
-                    class="w-full rounded-lg bg-amber-600 hover:bg-amber-700 text-white py-3 font-semibold transition-colors flex items-center justify-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z">
-                        </path>
-                    </svg>
-                    THANH TOÁN
-                </button>
+                @if (!empty($orderItems) && $selectedTable)
+                    <button wire:click="checkout"
+                        class="w-full rounded-lg bg-amber-600 hover:bg-amber-700 text-white py-3 font-semibold transition-colors flex items-center justify-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                        THANH TOÁN
+                    </button>
+                @endif
 
-
-
-                <button wire:click="clearOrder"
-                    class="w-full rounded-lg bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 font-semibold transition-colors flex items-center justify-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                        </path>
-                    </svg>
-                    XÓA MÓN
-                </button>
+                @if (!empty($orderItems))
+                    <button wire:click="clearOrder"
+                        class="w-full rounded-lg bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 font-semibold transition-colors flex items-center justify-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                            </path>
+                        </svg>
+                        XÓA MÓN
+                    </button>
+                @endif
             </div>
         </div>
     </div>
@@ -230,7 +242,7 @@
         </div>
     </div>
 
-   
+
     <div x-data="{
         open: false,
         orderItems: {},
@@ -293,28 +305,28 @@
                 }
             });
         },
-
+    
         // Danh sách mệnh giá tiền Việt Nam
         getDenominations() {
             const baseAmounts = [
                 10000, 20000, 50000, 100000, 200000, 500000
             ];
-            
+    
             // Tìm mệnh giá gần nhất >= tổng tiền
             const denominations = [];
-            
+    
             // Thêm các mệnh giá >= total
             baseAmounts.forEach(amount => {
                 if (amount >= this.total) {
                     denominations.push(amount);
                 }
             });
-            
+    
             // Nếu không có mệnh giá nào >= total, thêm mệnh giá cao nhất
             if (denominations.length === 0) {
                 denominations.push(500000);
             }
-            
+    
             // Thêm một số mệnh giá cao hơn để khách có thể trả
             const maxDenomination = Math.max(...baseAmounts);
             if (this.total > maxDenomination) {
@@ -325,10 +337,10 @@
                     denominations.push(roundedMillion * 2);
                 }
             }
-            
+    
             return [...new Set(denominations)].sort((a, b) => a - b);
         },
-
+    
         handleExactPayment() {
             if (this.exactPayment) {
                 this.cashReceived = this.total;
@@ -343,7 +355,7 @@
             }
             this.calculateChange();
         },
-
+    
         handleDenominationChange() {
             if (this.selectedDenomination === 'manual') {
                 this.showManualInput = true;
@@ -372,7 +384,7 @@
             }
             this.calculateChange();
         },
-
+    
         // Thêm số từ bàn phím
         addNumber(num) {
             const currentValue = this.cashReceived.toString();
@@ -380,7 +392,7 @@
             this.cashReceived = parseInt(newValue) || 0;
             this.updateCashReceived();
         },
-
+    
         // Xóa một số
         deleteNumber() {
             const currentValue = this.cashReceived.toString();
@@ -391,7 +403,7 @@
             }
             this.updateCashReceived();
         },
-
+    
         // Xóa tất cả
         clearAll() {
             this.cashReceived = 0;
@@ -405,7 +417,7 @@
                 this.change = 0;
             }
         },
-
+    
         updateCashReceived() {
             // Đồng bộ với Livewire khi nhập tay
             $wire.set('cashReceived', this.cashReceived);
@@ -417,7 +429,7 @@
                 this.selectedDenomination = 'manual';
             }
         },
-
+    
         resetPaymentInputs() {
             this.selectedDenomination = '';
             this.showManualInput = false;
@@ -436,7 +448,7 @@
         x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
-        
+
         <!-- Main Modal -->
         <div class="bg-white p-6 rounded-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto shadow-2xl relative">
             <h2 class="text-xl font-bold mb-4 text-amber-800">
@@ -479,7 +491,8 @@
             <!-- Payment method -->
             <div class="mb-4">
                 <label class="block mb-2 font-semibold text-gray-700">🏦 Phương thức thanh toán</label>
-                <select x-model="paymentMethod" wire:model="paymentMethod" @change="calculateChange(); resetPaymentInputs();"
+                <select x-model="paymentMethod" wire:model="paymentMethod"
+                    @change="calculateChange(); resetPaymentInputs();"
                     class="w-full border rounded-lg p-2 focus:border-amber-500 focus:outline-none">
                     <option value="cash">💵 Tiền mặt</option>
                     <option value="transfer">🏧 Chuyển khoản</option>
@@ -494,7 +507,8 @@
                         <input type="checkbox" x-model="exactPayment" @change="handleExactPayment()"
                             class="w-4 h-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500 focus:ring-2">
                         <span class="ml-2 text-sm font-medium text-gray-700">
-                             Khách trả đúng <span x-text="formatNumber(total) + ' ₫'" class="font-bold text-amber-600"></span>
+                            Khách trả đúng <span x-text="formatNumber(total) + ' ₫'"
+                                class="font-bold text-amber-600"></span>
                         </span>
                     </label>
                 </div>
@@ -516,14 +530,12 @@
                 <div x-show="showManualInput || exactPayment" class="mb-4">
                     <label class="block mb-2 font-semibold text-gray-700">💸 Tiền khách đưa</label>
                     <div class="flex space-x-2">
-                        <input type="number" x-model.number="cashReceived"
-                            x-ref="cashInput"
-                            @input="updateCashReceived()"
-                            :disabled="exactPayment"
+                        <input type="number" x-model.number="cashReceived" x-ref="cashInput"
+                            @input="updateCashReceived()" :disabled="exactPayment"
                             :class="exactPayment ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'"
                             class="flex-1 border rounded-lg p-2 focus:border-amber-500 focus:outline-none"
                             placeholder="Nhập số tiền khách đưa" :min="total" />
-                        
+
                         <!-- Nút hiện/ẩn bàn phím số -->
                         <button type="button" x-show="showManualInput && !exactPayment"
                             @click="showNumpad = !showNumpad"
@@ -593,82 +605,78 @@
         </div>
 
         <!-- Numpad Modal -->
-        <div x-show="showNumpad" 
-             x-transition:enter="transition ease-out duration-200"
-             x-transition:enter-start="opacity-0 scale-95 translate-x-4" 
-             x-transition:enter-end="opacity-100 scale-100 translate-x-0"
-             x-transition:leave="transition ease-in duration-100"
-             x-transition:leave-start="opacity-100 scale-100 translate-x-0" 
-             x-transition:leave-end="opacity-0 scale-95 translate-x-4"
-             class="  bg-white border-2 border-amber-300 rounded-lg shadow-xl p-3 z-10"
-             style="width: 200px;">
-            
+        <div x-show="showNumpad" x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 scale-95 translate-x-4"
+            x-transition:enter-end="opacity-100 scale-100 translate-x-0"
+            x-transition:leave="transition ease-in duration-100"
+            x-transition:leave-start="opacity-100 scale-100 translate-x-0"
+            x-transition:leave-end="opacity-0 scale-95 translate-x-4"
+            class="  bg-white border-2 border-amber-300 rounded-lg shadow-xl p-3 z-10" style="width: 200px;">
+
             <!-- Header bàn phím -->
             <div class="flex justify-between items-center mb-3">
                 <span class="text-sm font-semibold text-gray-700">🔢 Bàn phím số</span>
-                <button @click="showNumpad = false" 
-                        class="text-gray-400 hover:text-gray-600 text-lg">
+                <button @click="showNumpad = false" class="text-gray-400 hover:text-gray-600 text-lg">
                     ✕
                 </button>
             </div>
 
             <!-- Hiển thị số hiện tại -->
             <div class="bg-gray-100 p-2 rounded text-center mb-3">
-                <span x-text="formatNumber(cashReceived) + ' ₫'" 
-                      class="font-bold text-amber-700"></span>
+                <span x-text="formatNumber(cashReceived) + ' ₫'" class="font-bold text-amber-700"></span>
             </div>
 
             <!-- Grid bàn phím -->
             <div class="grid grid-cols-3 gap-2">
                 <!-- Hàng 1: 1,2,3 -->
                 <template x-for="i in 3" :key="i">
-                    <button @click="addNumber(i)" 
-                            class="bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded p-2 font-semibold text-blue-700 transition-colors">
+                    <button @click="addNumber(i)"
+                        class="bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded p-2 font-semibold text-blue-700 transition-colors">
                         <span x-text="i"></span>
                     </button>
                 </template>
 
                 <!-- Hàng 2: 4,5,6 -->
                 <template x-for="i in 3" :key="i + 3">
-                    <button @click="addNumber(i + 3)" 
-                            class="bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded p-2 font-semibold text-blue-700 transition-colors">
+                    <button @click="addNumber(i + 3)"
+                        class="bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded p-2 font-semibold text-blue-700 transition-colors">
                         <span x-text="i + 3"></span>
                     </button>
                 </template>
 
                 <!-- Hàng 3: 7,8,9 -->
                 <template x-for="i in 3" :key="i + 6">
-                    <button @click="addNumber(i + 6)" 
-                            class="bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded p-2 font-semibold text-blue-700 transition-colors">
+                    <button @click="addNumber(i + 6)"
+                        class="bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded p-2 font-semibold text-blue-700 transition-colors">
                         <span x-text="i + 6"></span>
                     </button>
                 </template>
 
                 <!-- Hàng 4: Clear, 0, Delete -->
-                <button @click="clearAll()" 
-                        class="bg-red-50 hover:bg-red-100 border border-red-200 rounded p-2 font-semibold text-red-700 transition-colors text-xs">
+                <button @click="clearAll()"
+                    class="bg-red-50 hover:bg-red-100 border border-red-200 rounded p-2 font-semibold text-red-700 transition-colors text-xs">
                     CLR
                 </button>
-                
-                <button @click="addNumber(0)" 
-                        class="bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded p-2 font-semibold text-blue-700 transition-colors">
+
+                <button @click="addNumber(0)"
+                    class="bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded p-2 font-semibold text-blue-700 transition-colors">
                     0
                 </button>
-                
-                <button @click="deleteNumber()" 
-                        class="bg-orange-50 hover:bg-orange-100 border border-orange-200 rounded p-2 font-semibold text-orange-700 transition-colors text-xs">
+
+                <button @click="deleteNumber()"
+                    class="bg-orange-50 hover:bg-orange-100 border border-orange-200 rounded p-2 font-semibold text-orange-700 transition-colors text-xs">
                     ⌫
                 </button>
             </div>
 
             <!-- Nút thêm số 0 -->
             <div class="grid grid-cols-2 gap-2 mt-2">
-                <button @click="addNumber('00')" 
-                        class="bg-green-50 hover:bg-green-100 border border-green-200 rounded p-2 font-semibold text-green-700 transition-colors">
+                <button @click="addNumber('00')"
+                    class="bg-green-50 hover:bg-green-100 border border-green-200 rounded p-2 font-semibold text-green-700 transition-colors">
                     00
                 </button>
-                <button @click="addNumber('000')" 
-                        class="bg-green-50 hover:bg-green-100 border border-green-200 rounded p-2 font-semibold text-green-700 transition-colors">
+                <button @click="addNumber('000')"
+                    class="bg-green-50 hover:bg-green-100 border border-green-200 rounded p-2 font-semibold text-green-700 transition-colors">
                     000
                 </button>
             </div>
