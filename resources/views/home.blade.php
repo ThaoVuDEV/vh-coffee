@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VH-Coffee - Hệ thống POS</title>
+    <title>Coffee Góc Ảnh - Trang chủ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -62,7 +62,7 @@
                         ☕
                     </div>
                     <div>
-                        <a href="{{ route('home') }}" class="text-xl font-bold tracking-wider">VH-COFFEE</a>
+                        <a href="{{ route('home') }}" class="text-xl font-bold tracking-wider">Coffee Góc Ảnh</a>
                     </div>
                 </div>
 
@@ -73,6 +73,7 @@
                 </nav>
 
                 <a href="#"
+             
                     class="hidden md:inline-block bg-white/20 hover:bg-white/30 text-white font-bold py-2 px-5 rounded-full transition-all duration-300">
                     Đặt Món
                 </a>
@@ -84,7 +85,7 @@
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-8">
         <div class="container mx-auto px-6 text-center">
-            <p>&copy; {{ date('Y') }} VH-Coffee. All Rights Reserved.</p>
+            <p>&copy; {{ date('Y') }} Coffee Góc Ảnh. All Rights Reserved.</p>
             <p class="text-sm text-gray-400 mt-2">Thiết kế và phát triển bởi ThaoDev.</p>
         </div>
     </footer>

@@ -762,7 +762,7 @@
                     " alt="Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     
                     
-                    <div style="font-size: 16px; font-weight: bold; margin-bottom: 2px;">VH-Coffee</div>
+                    <div style="font-size: 16px; font-weight: bold; margin-bottom: 2px;">Coffee Góc Ảnh</div>
                     <div style="font-size: 12px; margin-bottom: 1px;">TTTM Hòn Đất</div>
                     <div style="font-size: 12px; margin-bottom: 1px;">TT. Hòn Đất, An Giang</div>
                     <div style="font-size: 12px;">DT: 096815252-0938431415</div>
