@@ -8,5 +8,6 @@ include 'admin.php';
 Route::get('/login.html', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware([\App\Http\Middleware\RedirectIfNotAuthenticated::class])->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/thanh-toan', [HomeController::class, 'index'])->name('home');
 });
+ Route::get('/', [HomeController::class, 'home'])->name('home-page');
