@@ -20,7 +20,7 @@ class Login extends Component
 
         if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
             session()->regenerate();
-            return redirect()->intended('/');
+            return redirect()->intended('/thanh-toan');
         }
 
         $this->addError('email', 'Email hoặc mật khẩu không đúng.');

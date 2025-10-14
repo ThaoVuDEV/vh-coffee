@@ -61,7 +61,7 @@
                         ☕
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold">VH-COFFEE</h1>
+                        <h1 class="text-2xl font-bold">COFFEE GÓC ẢNH</h1>
                         <p class="text-amber-100 text-sm">Hệ thống quản lý bán hàng</p>
                     </div>
                 </div>

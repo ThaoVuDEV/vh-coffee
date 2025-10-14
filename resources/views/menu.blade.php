@@ -57,11 +57,9 @@
 </head>
 
 <body class="bg-amber-50 ">
-    <!-- Header -->
     <header class="bg-gradient-to-r from-amber-800 to-orange-700 text-white shadow-2xl sticky top-0 z-50">
         <div class="container mx-auto px-6 py-3">
             <div class="flex items-center justify-between">
-                <!-- Logo -->
                 <div class="flex items-center space-x-4">
                     <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-xl">
                         ☕
@@ -77,16 +75,12 @@
                     <a href="#contact" class="hover:text-amber-200 transition-colors">Liên hệ</a>
                 </nav>
 
-                <a href="/menu"
-                    class="hidden md:inline-block bg-white/20 hover:bg-white/30 text-white font-bold py-2 px-5 rounded-full transition-all duration-300">
-                    Đặt Món
-                </a>
+               
             </div>
         </div>
     </header>
 
-    <livewire:home-page />
-    <!-- Footer -->
+    <livewire:menu />
     <footer class="bg-gray-900 text-white py-8">
         <div class="container mx-auto px-6 text-center">
             <p>&copy; {{ date('Y') }} Coffee Góc Ảnh. All Rights Reserved.</p>

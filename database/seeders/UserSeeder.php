@@ -17,9 +17,9 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name' => 'Admin',
-                'email' => 'vh@coffee.com',
+                'email' => 'admin@gocanh.com',
                 'email_verified_at' => now(),
-                'password' => Hash::make('vh@coffee'), 
+                'password' => Hash::make('coffeegocanh'), 
                 'role' => 'admin',
                 'remember_token' => Str::random(10),
                 'created_at' => now(),
@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'Nhân Viên',
-                'email' => 'nv@coffee.com',
+                'email' => 'nhanvien@gocanh.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make('123456'), 
                 'role' => 'staff',

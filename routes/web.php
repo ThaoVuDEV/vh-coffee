@@ -11,3 +11,4 @@ Route::middleware([\App\Http\Middleware\RedirectIfNotAuthenticated::class])->gro
     Route::get('/thanh-toan', [HomeController::class, 'index'])->name('home');
 });
  Route::get('/', [HomeController::class, 'home'])->name('home-page');
+  Route::get('/menu', [HomeController::class, 'menu'])->name('menu');

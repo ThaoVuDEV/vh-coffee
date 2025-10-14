@@ -1,20 +1,198 @@
 <div class="bg-amber-50">
     <!-- Hero Section -->
-    <section id="home" class="relative h-[60vh] md:h-[80vh] bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1511920183353-30c341355b92?q=80&w=1974&auto=format&fit=crop');">
-        <div class="absolute inset-0 bg-black/50"></div>
-        <div class="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-4">
-            <h2 class="text-4xl md:text-6xl font-bold tracking-tight animate-fade-in" style="text-shadow: 2px 2px 8px rgba(0,0,0,0.7);">
+
+    <section id="home" class="relative h-[60vh] md:h-[80vh] overflow-hidden">
+        <!-- Slideshow Container -->
+        <div class="slideshow-container absolute inset-0">
+
+
+            <!-- Slide 2 -->
+            <div class="slide absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-1000"
+                style="background-image: url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=2078&auto=format&fit=crop');">
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="slide absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-1000"
+                style="background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047&auto=format&fit=crop');">
+            </div>
+
+            <!-- Slide 4 -->
+            <div class="slide absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-1000"
+                style="background-image: url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=2070&auto=format&fit=crop');">
+            </div>
+        </div>
+
+        <!-- Dark Overlay -->
+        <div class="absolute inset-0 bg-black/50 z-10"></div>
+
+        <!-- Content -->
+        <div class="relative z-20 flex flex-col items-center justify-center h-full text-white text-center px-4">
+            <h2 class="text-4xl md:text-6xl font-bold tracking-tight animate-fade-in"
+                style="text-shadow: 2px 2px 8px rgba(0,0,0,0.7);">
                 Không Gian Cà Phê Đậm Chất Riêng
             </h2>
-            <p class="mt-4 text-lg md:text-2xl max-w-2xl animate-fade-in" style="animation-delay: 0.3s; text-shadow: 1px 1px 4px rgba(0,0,0,0.6);">
+            <p class="mt-4 text-lg md:text-2xl max-w-2xl animate-fade-in"
+                style="animation-delay: 0.3s; text-shadow: 1px 1px 4px rgba(0,0,0,0.6);">
                 Nơi mỗi tách cà phê là một câu chuyện và mỗi góc quán là một kỷ niệm.
             </p>
-            <a href="#" class="mt-8 bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 animate-fade-in" style="animation-delay: 0.6s;">
+            <a href="menu"
+                class="mt-8 bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 animate-fade-in"
+                style="animation-delay: 0.6s;">
                 Đặt Món Ngay
             </a>
         </div>
+
+        <!-- Navigation Arrows -->
+        <button onclick="changeSlide(-1)"
+            class="absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-black/50 hover:bg-amber-600/80 text-white p-3 rounded-full transition-all duration-300 border-2 border-white/50 hover:border-amber-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </button>
+        <button onclick="changeSlide(1)"
+            class="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-black/50 hover:bg-amber-600/80 text-white p-3 rounded-full transition-all duration-300 border-2 border-white/50 hover:border-amber-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+        </button>
+
+        <!-- Slide Indicators -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-3">
+            <div onclick="goToSlide(0)"
+                class="indicator w-3 h-3 rounded-full bg-amber-600 cursor-pointer transition-all duration-300 hover:scale-110">
+            </div>
+            <div onclick="goToSlide(1)"
+                class="indicator w-3 h-3 rounded-full bg-white/50 cursor-pointer transition-all duration-300 hover:scale-110">
+            </div>
+            <div onclick="goToSlide(2)"
+                class="indicator w-3 h-3 rounded-full bg-white/50 cursor-pointer transition-all duration-300 hover:scale-110">
+            </div>
+        </div>
     </section>
 
+    <section id="menu" class="py-16 md:py-24 bg-amber-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-amber-800 mb-2">Thực Đơn Nổi Bật</h3>
+                <p class="text-gray-600 max-w-2xl mx-auto">Những món được yêu thích nhất tại Coffee Góc Ảnh,
+                    được pha chế từ tâm huyết của chúng tôi.</p>
+            </div>
+
+            <!-- Carousel Container -->
+            <div class="relative">
+                <!-- Navigation Buttons -->
+                <button onclick="scrollMenu(-1)"
+                    class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-amber-600 text-amber-600 hover:text-white p-3 rounded-full shadow-lg transition-all duration-300 -ml-4 hidden md:block">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
+                        </path>
+                    </svg>
+                </button>
+
+                <button onclick="scrollMenu(1)"
+                    class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-amber-600 text-amber-600 hover:text-white p-3 rounded-full shadow-lg transition-all duration-300 -mr-4 hidden md:block">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+
+                <!-- Menu Carousel -->
+                <div id="menuCarousel" class="flex overflow-x-auto gap-6 pb-4 scroll-smooth snap-x snap-mandatory"
+                    style="scrollbar-width: none; -ms-overflow-style: none;">
+
+
+                    <div
+                        class="flex-none w-80 snap-center bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                        <img src="https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?q=80&w=2035&auto=format&fit=crop"
+                            alt="Bạc Xỉu" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-semibold text-gray-800">Bạc Xỉu</h4>
+                            <p class="text-gray-600 mt-2">Ngọt ngào, nhẹ nhàng, phù hợp cho một buổi chiều thư giãn.</p>
+                            <p class="text-amber-600 font-bold text-lg mt-3">32.000đ</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex-none w-80 snap-center bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                        <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=2087&auto=format&fit=crop"
+                            alt="Cà Phê Đen" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-semibold text-gray-800">Cà Phê Đen</h4>
+                            <p class="text-gray-600 mt-2">Đắng đậm đà, cho người sành điệu yêu cà phê thuần khiết.</p>
+                            <p class="text-amber-600 font-bold text-lg mt-3">30.000đ</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex-none w-80 snap-center bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                        <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?q=80&w=2062&auto=format&fit=crop"
+                            alt="Cappuccino" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-semibold text-gray-800">Cappuccino</h4>
+                            <p class="text-gray-600 mt-2">Sự kết hợp hoàn hảo giữa espresso và sữa tươi mịn màng.</p>
+                            <p class="text-amber-600 font-bold text-lg mt-3">45.000đ</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex-none w-80 snap-center bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                        <img src="https://images.unsplash.com/photo-1561882468-9110e03e0f78?q=80&w=2074&auto=format&fit=crop"
+                            alt="Latte" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-semibold text-gray-800">Latte</h4>
+                            <p class="text-gray-600 mt-2">Hương vị cà phê nhẹ nhàng hòa quyện cùng sữa tươi béo ngậy.
+                            </p>
+                            <p class="text-amber-600 font-bold text-lg mt-3">48.000đ</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex-none w-80 snap-center bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                        <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?q=80&w=2064&auto=format&fit=crop"
+                            alt="Trà Vải Cam Sả" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-semibold text-gray-800">Trà Vải Cam Sả</h4>
+                            <p class="text-gray-600 mt-2">Sự kết hợp thanh mát, giải nhiệt cho ngày hè oi ả.</p>
+                            <p class="text-amber-600 font-bold text-lg mt-3">40.000đ</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex-none w-80 snap-center bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                        <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?q=80&w=2141&auto=format&fit=crop"
+                            alt="Trà Đào" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-semibold text-gray-800">Trà Đào</h4>
+                            <p class="text-gray-600 mt-2">Vị đào ngọt thanh kết hợp cùng trà xanh mát lạnh.</p>
+                            <p class="text-amber-600 font-bold text-lg mt-3">42.000đ</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex-none w-80 snap-center bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                        <img src="https://images.unsplash.com/photo-1515823064-d6e0c04616a7?q=80&w=2071&auto=format&fit=crop"
+                            alt="Matcha Latte" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-semibold text-gray-800">Matcha Latte</h4>
+                            <p class="text-gray-600 mt-2">Trà xanh Nhật Bản thơm ngon, pha cùng sữa tươi béo ngậy.</p>
+                            <p class="text-amber-600 font-bold text-lg mt-3">50.000đ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <a href="/menu"
+                    class="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white font-bold py-4 px-10 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                    <span>Xem Tất Cả Món</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
     <!-- About Us Section -->
     <section id="about" class="py-16 md:py-24 bg-white">
         <div class="container mx-auto px-6">
@@ -32,92 +210,77 @@
                     </p>
                 </div>
                 <div class="animate-fade-in" style="animation-delay: 0.2s;">
-                    <img src="https://images.unsplash.com/photo-1559496417-e7f25cb247f3?q=80&w=1974&auto=format&fit=crop" alt="Không gian quán Coffee Góc Ảnh" class="rounded-2xl shadow-xl w-full h-auto object-cover">
+                    <img src="https://images.unsplash.com/photo-1559496417-e7f25cb247f3?q=80&w=1974&auto=format&fit=crop"
+                        alt="Không gian quán Coffee Góc Ảnh" class="rounded-2xl shadow-xl w-full h-auto object-cover">
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Menu Highlights -->
-    <section id="menu" class="py-16 md:py-24 bg-amber-50">
-        <div class="container mx-auto px-6 text-center">
-            <h3 class="text-3xl font-bold text-amber-800 mb-2">Thực Đơn Nổi Bật</h3>
-            <p class="text-gray-600 mb-12 max-w-2xl mx-auto">Những món được yêu thích nhất tại Coffee Góc Ảnh,
-                được pha chế từ tâm huyết của chúng tôi.</p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Item 1 -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
-                    <img src="https://images.unsplash.com/photo-1572442388855-4341a5745c93?q=80&w=1964&auto=format&fit=crop" alt="Cà Phê Sữa Đá" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-xl font-semibold text-gray-800">Cà Phê Sữa Đá</h4>
-                        <p class="text-gray-600 mt-2">Hương vị đậm đà truyền thống, đánh thức mọi giác quan.
-                        </p>
-                    </div>
-                </div>
-                <!-- Item 2 -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
-                    <img src="https://images.unsplash.com/photo-1621289402102-41fe423a130a?q=80&w=1974&auto=format&fit=crop" alt="Trà Vải" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-xl font-semibold text-gray-800">Trà Vải Cam Sả</h4>
-                        <p class="text-gray-600 mt-2">Sự kết hợp thanh mát, giải nhiệt cho ngày hè oi ả.</p>
-                    </div>
-                </div>
-                <!-- Item 3 -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
-                    <img src="https://images.unsplash.com/photo-1546379753-077a134d5de1?q=80&w=1974&auto=format&fit=crop" alt="Bạc Xỉu" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-xl font-semibold text-gray-800">Bạc Xỉu</h4>
-                        <p class="text-gray-600 mt-2">Ngọt ngào, nhẹ nhàng, phù hợp cho một buổi chiều thư
-                            giãn.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Gallery Section -->
     <section id="gallery" class="py-16 md:py-24 bg-white">
         <div class="container mx-auto px-6 text-center">
             <h3 class="text-3xl font-bold text-amber-800 mb-2">Góc Ảnh Quán</h3>
             <p class="text-gray-600 mb-12 max-w-2xl mx-auto">Lưu giữ những khoảnh khắc đẹp tại
                 Coffee Góc Ảnh. Mỗi góc nhỏ đều có thể trở thành background "sống ảo" của bạn.</p>
+
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Cột 1 -->
                 <div class="grid gap-4">
                     <div>
-                        <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105" src="https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=2070&auto=format&fit=crop" alt="Góc quán 1">
+                        <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105"
+                            src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?q=80&w=2071&auto=format&fit=crop"
+                            alt="Góc quán vintage">
                     </div>
                     <div>
-                        <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105" src="https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=1937&auto=format&fit=crop" alt="Latte Art">
+                        <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105"
+                            src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=2078&auto=format&fit=crop"
+                            alt="Không gian quán cafe ấm cúng">
                     </div>
                 </div>
+
+                <!-- Cột 2 -->
                 <div class="grid gap-4">
                     <div>
-                        <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105" src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=1974&auto=format&fit=crop" alt="Khách hàng tại quán">
+                        <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105"
+                            src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?q=80&w=2070&auto=format&fit=crop"
+                            alt="Góc cafe view đẹp">
                     </div>
                     <div>
-                        <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45c?q=80&w=2070&auto=format&fit=crop" alt="Quầy bar">
+                        <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105"
+                            src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?q=80&w=2070&auto=format&fit=crop"
+                            alt="Góc cafe view đẹp">
                     </div>
                 </div>
+
+                <!-- Cột 3 -->
                 <div class="grid gap-4">
                     <div>
-                        <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105" src="https://images.unsplash.com/photo-1497636577773-f1231844b336?q=80&w=2070&auto=format&fit=crop" alt="Góc đọc sách">
+                        <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105"
+                            src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047&auto=format&fit=crop"
+                            alt="Không gian cafe hiện đại">
                     </div>
                     <div>
-                        <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105" src="https://images.unsplash.com/photo-1514432324600-a129b4a929a3?q=80&w=1974&auto=format&fit=crop" alt="Chi tiết trang trí">
+                        <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105"
+                            src="https://images.unsplash.com/photo-1453614512568-c4024d13c247?q=80&w=2232&auto=format&fit=crop"
+                            alt="Góc ngồi sân vườn">
                     </div>
                 </div>
+
+                <!-- Cột 4 -->
                 <div class="grid gap-4">
                     <div>
-                        <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105" src="https://images.unsplash.com/photo-1534040385115-33dcb3acba5b?q=80&w=1974&auto=format&fit=crop" alt="Không gian ngoài trời">
+                        <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105"
+                            src="https://images.unsplash.com/photo-1493857671505-72967e2e2760?q=80&w=2070&auto=format&fit=crop"
+                            alt="Bàn ghế cafe phong cách">
                     </div>
                     <div>
-                        <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105" src="https://images.unsplash.com/photo-1525896553-05618a243100?q=80&w=1974&auto=format&fit=crop" alt="Cà phê và bánh">
+                        <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105"
+                            src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?q=80&w=2070&auto=format&fit=crop"
+                            alt="Góc thư giãn cafe">
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Location & Contact -->
 
     <section id="contact" class="py-16 md:py-24 bg-amber-800 text-white">
         <div class="container mx-auto px-6">
@@ -127,14 +290,89 @@
                     <p class="text-amber-200 mb-2"><strong class="font-semibold text-white">Địa
                             chỉ:</strong> TTTM Hòn Đất, TT. Hòn Đất, An Giang</p>
                     <p class="text-amber-200 mb-2"><strong class="font-semibold text-white">Điện
-                            thoại:</strong> 0968 152 52 - 0938 431 415</p>
+                            thoại:</strong> 0796815252 - 0938 431 415</p>
                     <p class="text-amber-200"><strong class="font-semibold text-white">Giờ mở
                             cửa:</strong> 7:00 - 22:00 mỗi ngày</p>
                 </div>
                 <div>
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3925.337612147633!2d104.9818408748003!3d10.31496189011155!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x310a0b1b1b1b1b1b%3A0x1b1b1b1b1b1b1b1b!2zVFLhuqduZyBCw6BuZywgSMOybiDEkOG6pXQsIEFuIEdpYW5nLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1672560000000!5m2!1svi!2s" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="rounded-2xl shadow-xl"></iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d347.0947760980335!2d104.92268006447745!3d10.186411799154156!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a757002c845de1%3A0xfcf65e08d6090d2!2zQ29mZmVlIEfDs2Mg4bqjbmg!5e0!3m2!1svi!2s!4v1760452886638!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
         </div>
     </section>
 </div>
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const indicators = document.querySelectorAll('.indicator');
+    let autoSlideInterval;
+
+    function showSlide(index) {
+        // Reset all slides
+        slides.forEach(slide => {
+            slide.classList.remove('active');
+            slide.style.opacity = '0';
+        });
+
+        // Reset all indicators
+        indicators.forEach(indicator => {
+            indicator.classList.remove('bg-amber-600');
+            indicator.classList.add('bg-white/50');
+        });
+
+        // Show current slide
+        slides[index].classList.add('active');
+        slides[index].style.opacity = '1';
+
+        // Highlight current indicator
+        indicators[index].classList.remove('bg-white/50');
+        indicators[index].classList.add('bg-amber-600');
+    }
+
+    function changeSlide(direction) {
+        currentSlide += direction;
+
+        if (currentSlide < 0) {
+            currentSlide = slides.length - 1;
+        } else if (currentSlide >= slides.length) {
+            currentSlide = 0;
+        }
+
+        showSlide(currentSlide);
+        resetAutoSlide();
+    }
+
+    function goToSlide(index) {
+        currentSlide = index;
+        showSlide(currentSlide);
+        resetAutoSlide();
+    }
+
+    function autoSlide() {
+        currentSlide++;
+        if (currentSlide >= slides.length) {
+            currentSlide = 0;
+        }
+        showSlide(currentSlide);
+    }
+
+    function resetAutoSlide() {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = setInterval(autoSlide, 5000);
+    }
+
+    // Start auto slide
+    autoSlideInterval = setInterval(autoSlide, 5000);
+
+    // Initialize first slide
+    showSlide(0);
+
+    function scrollMenu(direction) {
+        const carousel = document.getElementById('menuCarousel');
+        const scrollAmount = 336; // width of card (320px) + gap (16px)
+        carousel.scrollBy({
+            left: direction * scrollAmount,
+            behavior: 'smooth'
+        });
+    }
+</script>
