@@ -13,7 +13,7 @@
     <form wire:submit.prevent="login">
         <div class="form-group">
             <label class="form-label" for="email">Tài khoản</label>
-            <input type="email" id="email" class="form-input" wire:model.defer="email" placeholder="Nhập tài khoản của bạn" >
+            <input type="email" id="email" class="form-input" wire:model="email" placeholder="Nhập tài khoản của bạn" >
         </div>
 
         <div class="form-group">
