@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VH-Coffee - Đăng nhập</title>
+    <title>Coffee Góc Ảnh - Đăng nhập</title>
     <style>
         * {
             margin: 0;
