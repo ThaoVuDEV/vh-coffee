@@ -1,11 +1,9 @@
 <div>
     <div class="logo-section">
         <div class="coffee-icon"></div>
-        <h1 class="brand-name">VH-Coffee</h1>
-        <p class="subtitle">Hệ thống quản lý quán cà phê</p>
+        <h1 class="brand-name">COFFEE GÓC ẢNH</h1>
     </div>
 
-    {{-- Hiển thị lỗi --}}
     @if ($errors->any())
         <div class="error-message">
             {{ $errors->first('email') }}
@@ -32,8 +30,8 @@
     </form>
 
     <div class="footer-text">
-        <p>© 2025 VH-Coffee. Phiên bản 1.0</p>
-        <p style="margin-top: 5px; font-size: 12px;">Liên hệ hỗ trợ: ThaoDev - 0386087403</p>
+        <p> Coffee Góc Ảnh</p>
+        <p style="margin-top: 5px; font-size: 12px;">Liên hệ hỗ trợ: AlexVu - 0386087403</p>
     </div>
 </div>
 
