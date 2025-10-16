@@ -282,6 +282,39 @@
         </div>
     </section>
 
+    <section id="kyniem" class="py-16 md:py-24 bg-amber-50">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-3xl font-bold text-amber-800 mb-2">Khoảnh Khắc Kỷ Niệm</h3>
+            <p class="text-gray-600 mb-12 max-w-2xl mx-auto">Những tấm ảnh kỷ niệm được khách hàng ghi lại tại Coffee Góc Ảnh, giống như được ghim trên tường.</p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+                <!-- Customer Photo 1 -->
+                <div class="bg-white p-3 pb-4 rounded-lg shadow-lg transform -rotate-3 transition-transform hover:scale-105 hover:rotate-0">
+                    <img class="h-auto max-w-full rounded-md" src="https://images.unsplash.com/photo-1528740561666-dc2479703592?q=80&w=1974&auto=format&fit=crop" alt="Ảnh kỷ niệm của khách hàng">
+                    <p class="text-sm text-gray-500 mt-3 italic">"Cà phê ngon, view đẹp!" - An</p>
+                </div>
+
+                <!-- Customer Photo 2 -->
+                <div class="bg-white p-3 pb-4 rounded-lg shadow-lg transform rotate-2 transition-transform hover:scale-105 hover:rotate-0">
+                    <img class="h-auto max-w-full rounded-md" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1974&auto=format&fit=crop" alt="Ảnh kỷ niệm của khách hàng">
+                    <p class="text-sm text-gray-500 mt-3 italic">"Quán ruột của mình." - Bình</p>
+                </div>
+
+                <!-- Customer Photo 3 -->
+                <div class="bg-white p-3 pb-4 rounded-lg shadow-lg transform rotate-1 transition-transform hover:scale-105 hover:rotate-0 sm:hidden md:block">
+                    <img class="h-auto max-w-full rounded-md" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop" alt="Ảnh kỷ niệm của khách hàng">
+                    <p class="text-sm text-gray-500 mt-3 italic">"Sẽ quay lại nhiều lần nữa." - Châu</p>
+                </div>
+
+                <!-- Customer Photo 4 -->
+                <div class="bg-white p-3 pb-4 rounded-lg shadow-lg transform -rotate-2 transition-transform hover:scale-105 hover:rotate-0 sm:hidden lg:block">
+                    <img class="h-auto max-w-full rounded-md" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=1964&auto=format&fit=crop" alt="Ảnh kỷ niệm của khách hàng">
+                    <p class="text-sm text-gray-500 mt-3 italic">"Nhân viên thân thiện." - Dũng</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="contact" class="py-16 md:py-24 bg-amber-800 text-white">
         <div class="container mx-auto px-6">
             <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -290,16 +323,34 @@
                     <p class="text-amber-200 mb-2"><strong class="font-semibold text-white">Địa
                             chỉ:</strong> TTTM Hòn Đất, TT. Hòn Đất, An Giang</p>
                     <p class="text-amber-200 mb-2"><strong class="font-semibold text-white">Điện
-                            thoại:</strong> 0796815252 - 0938 431 415</p>
+                            thoại:</strong> 0796 815 252 - 0938 431 415</p>
                     <p class="text-amber-200"><strong class="font-semibold text-white">Giờ mở
                             cửa:</strong> 7:00 - 22:00 mỗi ngày</p>
+                    <!-- Facebook Fanpage -->
+                    <div class="mt-6">
+                        <div id="fb-root"></div>
+                        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v17.0"
+                            nonce="XYZ123"></script>
+                        <div class="fb-page " data-href="https://www.facebook.com/profile.php?id=61577963981041"
+                            data-tabs="timeline" data-width="500" data-height="450" data-small-header="false"
+                            data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
+                            <blockquote cite="https://www.facebook.com/profile.php?id=61577963981041"
+                                class="fb-xfbml-parse-ignore">
+                                <a href="https://www.facebook.com/profile.php?id=61577963981041">Fanpage</a>
+                            </blockquote>
+                        </div>
+                    </div>
                 </div>
                 <div>
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d347.0947760980335!2d104.92268006447745!3d10.186411799154156!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a757002c845de1%3A0xfcf65e08d6090d2!2zQ29mZmVlIEfDs2Mg4bqjbmg!5e0!3m2!1svi!2s!4v1760452886638!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d347.0947760980335!2d104.92268006447745!3d10.186411799154156!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a757002c845de1%3A0xfcf65e08d6090d2!2zQ29mZmVlIEfDs2Mg4bqjbmg!5e0!3m2!1svi!2s!4v1760452886638!5m2!1svi!2s"
+                        height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade" class="w-full rounded-lg shadow-xl"></iframe>
                 </div>
             </div>
         </div>
     </section>
+
 </div>
 <script>
     let currentSlide = 0;

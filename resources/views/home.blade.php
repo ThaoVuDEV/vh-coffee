@@ -76,6 +76,7 @@
                 <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
                     <a href="#menu" class="hover:text-amber-200 transition-colors">Thực đơn</a>
                     <a href="#gallery" class="hover:text-amber-200 transition-colors">Góc ảnh</a>
+                    <a href="#kyniem" class="hover:text-amber-200 transition-colors">Kỷ niệm</a>
                     <a href="#contact" class="hover:text-amber-200 transition-colors">Liên hệ</a>
                 </nav>
 
