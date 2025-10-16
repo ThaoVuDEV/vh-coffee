@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         integrity="sha512-rXcWZUv...etc" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="{{ asset('storage/images/logo.png') }}" type="image/png">
 
     <!-- Flowbite JS (nếu chưa có) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
@@ -46,9 +47,11 @@
             class="fixed lg:relative w-64 bg-white shadow-xl transform -translate-x-full lg:translate-x-0 transition-transform duration-300 z-20 h-screen lg:h-auto">
             <!-- Logo -->
             <div class="bg-gradient-to-r from-coffee-600 to-coffee-700 p-4 text-white">
-                <a href="{{route('home')}}">
+                <a href="{{ route('home') }}">
                     <div class="flex items-center space-x-2">
-                        <span class="text-xl">☕</span>
+                        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-xl">
+                            <img src="{{ asset('storage/images/logo.jpg') }}" alt="" class="rounded-full">
+                        </div>
                         <div>
                             <h2 class="text-lg font-bold">COFFEE GÓC ẢNH</h2>
                             <p class="text-coffee-200 text-xs">Quản lý quán nhà</p>

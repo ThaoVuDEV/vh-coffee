@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coffee Góc Ảnh - Trang chủ</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="{{ asset('storage/images/logo.png') }}" type="image/png" >
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -64,7 +66,7 @@
                 <!-- Logo -->
                 <div class="flex items-center space-x-4">
                     <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-xl">
-                        ☕
+                        <img src="{{ asset('storage/images/logo.jpg') }}" alt="" class="rounded-full">
                     </div>
                     <div>
                         <a href="{{ route('home-page') }}" class="text-xl font-bold tracking-wider">Coffee Góc Ảnh</a>

@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coffee Góc Ảnh - Đăng nhập</title>
+    <link rel="icon" href="{{ asset('storage/images/logo.png') }}" type="image/png">
+
     <style>
         * {
             margin: 0;
@@ -53,6 +55,9 @@
             width: 80px;
             height: 80px;
             background: linear-gradient(135deg, #8B4513, #D2691E);
+            background-image: url('/storage/images/logo.jpg');
+            background-size: cover;
+            background-position: center;
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
@@ -75,9 +80,13 @@
         }
 
         .coffee-icon::before {
-            content: '☕';
-            font-size: 40px;
-            color: white;
+            content: '';
+            /* bắt buộc */
+            display: block;
+            width: 40px;
+            height: 40px;
+            background-size: cover;
+            background-position: center;
         }
 
         .brand-name {

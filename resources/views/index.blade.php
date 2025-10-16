@@ -57,8 +57,8 @@
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl">
-                        ☕
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-xl">
+                        <img src="{{ asset('storage/images/logo.jpg') }}" alt="" class="rounded-full">
                     </div>
                     <div>
                         <h1 class="text-2xl font-bold">COFFEE GÓC ẢNH</h1>
