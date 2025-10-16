@@ -27,7 +27,7 @@
 
         <!-- Content -->
         <div class="relative z-20 flex flex-col items-center justify-center h-full text-white text-center px-4">
-            <h2 class="text-4xl md:text-6xl font-bold tracking-tight animate-fade-in"
+            <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight animate-fade-in"
                 style="text-shadow: 2px 2px 8px rgba(0,0,0,0.7);">
                 Không Gian Cà Phê Đậm Chất Riêng
             </h2>
@@ -72,14 +72,14 @@
 
     <section id="menu" class="py-16 md:py-24 bg-amber-50">
         <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
+            <div class="text-center mb-12" data-aos="fade-up">
                 <h3 class="text-3xl font-bold text-amber-800 mb-2">Thực Đơn Nổi Bật</h3>
                 <p class="text-gray-600 max-w-2xl mx-auto">Những món được yêu thích nhất tại Coffee Góc Ảnh,
                     được pha chế từ tâm huyết của chúng tôi.</p>
             </div>
 
             <!-- Carousel Container -->
-            <div class="relative">
+            <div class="relative" data-aos="fade-up" data-aos-delay="200">
                 <!-- Navigation Buttons -->
                 <button onclick="scrollMenu(-1)"
                     class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-amber-600 text-amber-600 hover:text-white p-3 rounded-full shadow-lg transition-all duration-300 -ml-4 hidden md:block">
@@ -181,7 +181,7 @@
                 </div>
             </div>
 
-            <div class="mt-12 text-center">
+            <div class="mt-12 text-center" data-aos="fade-up">
                 <a href="/menu"
                     class="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white font-bold py-4 px-10 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
                     <span>Xem Tất Cả Món</span>
@@ -194,10 +194,10 @@
         </div>
     </section>
     <!-- About Us Section -->
-    <section id="about" class="py-16 md:py-24 bg-white">
+    <section id="about" class="py-16 md:py-24 bg-white overflow-hidden">
         <div class="container mx-auto px-6">
             <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="animate-fade-in">
+                <div data-aos="fade-right">
                     <h3 class="text-3xl font-bold text-amber-800 mb-4">Về Coffee Góc Ảnh</h3>
                     <p class="text-gray-600 leading-relaxed mb-4">
                         Tại Coffee Góc Ảnh, chúng tôi tin rằng cà phê không chỉ là một thức uống, mà là một nghệ
@@ -209,22 +209,24 @@
                         gặp gỡ bạn bè, làm việc, hay đơn giản là tìm một góc yên tĩnh cho riêng mình.
                     </p>
                 </div>
-                <div class="animate-fade-in" style="animation-delay: 0.2s;">
+                <div data-aos="fade-left" data-aos-delay="200">
                     <img src="https://images.unsplash.com/photo-1559496417-e7f25cb247f3?q=80&w=1974&auto=format&fit=crop"
                         alt="Không gian quán Coffee Góc Ảnh" class="rounded-2xl shadow-xl w-full h-auto object-cover">
                 </div>
             </div>
         </div>
     </section>
-    <section id="gallery" class="py-16 md:py-24 bg-white">
+    <section id="gallery" class="py-16 md:py-24 bg-white overflow-hidden">
         <div class="container mx-auto px-6 text-center">
-            <h3 class="text-3xl font-bold text-amber-800 mb-2">Góc Ảnh Quán</h3>
-            <p class="text-gray-600 mb-12 max-w-2xl mx-auto">Lưu giữ những khoảnh khắc đẹp tại
-                Coffee Góc Ảnh. Mỗi góc nhỏ đều có thể trở thành background "sống ảo" của bạn.</p>
+            <div data-aos="fade-up">
+                <h3 class="text-3xl font-bold text-amber-800 mb-2">Góc Ảnh Quán</h3>
+                <p class="text-gray-600 mb-12 max-w-2xl mx-auto">Lưu giữ những khoảnh khắc đẹp tại
+                    Coffee Góc Ảnh. Mỗi góc nhỏ đều có thể trở thành background "sống ảo" của bạn.</p>
+            </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                 <!-- Cột 1 -->
-                <div class="grid gap-4">
+                <div class="grid gap-4" data-aos="fade-up" data-aos-delay="100">
                     <div>
                         <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105"
                             src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?q=80&w=2071&auto=format&fit=crop"
@@ -238,7 +240,7 @@
                 </div>
 
                 <!-- Cột 2 -->
-                <div class="grid gap-4">
+                <div class="grid gap-4" data-aos="fade-up" data-aos-delay="200">
                     <div>
                         <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105"
                             src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?q=80&w=2070&auto=format&fit=crop"
@@ -252,7 +254,7 @@
                 </div>
 
                 <!-- Cột 3 -->
-                <div class="grid gap-4">
+                <div class="grid gap-4" data-aos="fade-up" data-aos-delay="300">
                     <div>
                         <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105"
                             src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047&auto=format&fit=crop"
@@ -266,7 +268,7 @@
                 </div>
 
                 <!-- Cột 4 -->
-                <div class="grid gap-4">
+                <div class="grid gap-4" data-aos="fade-up" data-aos-delay="400">
                     <div>
                         <img class="h-auto max-w-full rounded-lg shadow-md transition-transform hover:scale-105"
                             src="https://images.unsplash.com/photo-1493857671505-72967e2e2760?q=80&w=2070&auto=format&fit=crop"
@@ -282,32 +284,33 @@
         </div>
     </section>
 
-    <section id="kyniem" class="py-16 md:py-24 bg-amber-50">
+    <section id="kyniem" class="py-16 md:py-24 bg-amber-50 overflow-hidden">
         <div class="container mx-auto px-6 text-center">
-            <h3 class="text-3xl font-bold text-amber-800 mb-2">Khoảnh Khắc Kỷ Niệm</h3>
-            <p class="text-gray-600 mb-12 max-w-2xl mx-auto">Những tấm ảnh kỷ niệm được khách hàng ghi lại tại Coffee Góc Ảnh, giống như được ghim trên tường.</p>
-
+            <div data-aos="fade-up">
+                <h3 class="text-3xl font-bold text-amber-800 mb-2">Khoảnh Khắc Kỷ Niệm</h3>
+                <p class="text-gray-600 mb-12 max-w-2xl mx-auto">Những tấm ảnh kỷ niệm được khách hàng ghi lại tại Coffee Góc Ảnh, giống như được ghim trên tường.</p>
+            </div>
             <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
                 <!-- Customer Photo 1 -->
-                <div class="bg-white p-3 pb-4 rounded-lg shadow-lg transform -rotate-3 transition-transform hover:scale-105 hover:rotate-0">
+                <div class="bg-white p-3 pb-4 rounded-lg shadow-lg transform -rotate-3 transition-transform hover:scale-105 hover:rotate-0" data-aos="fade-up" data-aos-delay="100">
                     <img class="h-auto max-w-full rounded-md" src="https://images.unsplash.com/photo-1528740561666-dc2479703592?q=80&w=1974&auto=format&fit=crop" alt="Ảnh kỷ niệm của khách hàng">
                     <p class="text-sm text-gray-500 mt-3 italic">"Cà phê ngon, view đẹp!" - An</p>
                 </div>
 
                 <!-- Customer Photo 2 -->
-                <div class="bg-white p-3 pb-4 rounded-lg shadow-lg transform rotate-2 transition-transform hover:scale-105 hover:rotate-0">
+                <div class="bg-white p-3 pb-4 rounded-lg shadow-lg transform rotate-2 transition-transform hover:scale-105 hover:rotate-0" data-aos="fade-up" data-aos-delay="200">
                     <img class="h-auto max-w-full rounded-md" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1974&auto=format&fit=crop" alt="Ảnh kỷ niệm của khách hàng">
                     <p class="text-sm text-gray-500 mt-3 italic">"Quán ruột của mình." - Bình</p>
                 </div>
 
                 <!-- Customer Photo 3 -->
-                <div class="bg-white p-3 pb-4 rounded-lg shadow-lg transform rotate-1 transition-transform hover:scale-105 hover:rotate-0 sm:hidden md:block">
+                <div class="bg-white p-3 pb-4 rounded-lg shadow-lg transform rotate-1 transition-transform hover:scale-105 hover:rotate-0 sm:hidden md:block" data-aos="fade-up" data-aos-delay="300">
                     <img class="h-auto max-w-full rounded-md" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop" alt="Ảnh kỷ niệm của khách hàng">
                     <p class="text-sm text-gray-500 mt-3 italic">"Sẽ quay lại nhiều lần nữa." - Châu</p>
                 </div>
 
                 <!-- Customer Photo 4 -->
-                <div class="bg-white p-3 pb-4 rounded-lg shadow-lg transform -rotate-2 transition-transform hover:scale-105 hover:rotate-0 sm:hidden lg:block">
+                <div class="bg-white p-3 pb-4 rounded-lg shadow-lg transform -rotate-2 transition-transform hover:scale-105 hover:rotate-0 sm:hidden lg:block" data-aos="fade-up" data-aos-delay="400">
                     <img class="h-auto max-w-full rounded-md" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=1964&auto=format&fit=crop" alt="Ảnh kỷ niệm của khách hàng">
                     <p class="text-sm text-gray-500 mt-3 italic">"Nhân viên thân thiện." - Dũng</p>
                 </div>
@@ -315,15 +318,15 @@
         </div>
     </section>
 
-    <section id="contact" class="py-16 md:py-24 bg-amber-800 text-white">
+    <section id="contact" class="py-16 md:py-24 bg-amber-800 text-white overflow-hidden">
         <div class="container mx-auto px-6">
             <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div>
+                <div data-aos="fade-right">
                     <h3 class="text-3xl font-bold mb-4">Ghé Thăm Chúng Tôi</h3>
                     <p class="text-amber-200 mb-2"><strong class="font-semibold text-white">Địa
                             chỉ:</strong> TTTM Hòn Đất, TT. Hòn Đất, An Giang</p>
                     <p class="text-amber-200 mb-2"><strong class="font-semibold text-white">Điện
-                            thoại:</strong> 0796 815 252 - 0938 431 415</p>
+                            thoại:</strong> <a href="tel:0796815252" class="hover:underline">0796 815 252</a> - <a href="tel:0938431415" class="hover:underline">0938 431 415</a></p>
                     <p class="text-amber-200"><strong class="font-semibold text-white">Giờ mở
                             cửa:</strong> 7:00 - 22:00 mỗi ngày</p>
                     <!-- Facebook Fanpage -->
@@ -341,7 +344,7 @@
                         </div>
                     </div>
                 </div>
-                <div>
+                <div data-aos="fade-left" data-aos-delay="200">
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d347.0947760980335!2d104.92268006447745!3d10.186411799154156!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a757002c845de1%3A0xfcf65e08d6090d2!2zQ29mZmVlIEfDs2Mg4bqjbmg!5e0!3m2!1svi!2s!4v1760452886638!5m2!1svi!2s"
                         height="450" style="border:0;" allowfullscreen="" loading="lazy"

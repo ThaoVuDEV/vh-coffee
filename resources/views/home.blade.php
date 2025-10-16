@@ -7,6 +7,7 @@
     <title>Coffee Góc Ảnh - Trang chủ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="{{ asset('storage/images/logo.png') }}" type="image/png" >
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -96,6 +97,13 @@
             <p class="text-sm text-gray-400 mt-2">Thiết kế và phát triển bởi AlexVu.</p>
         </div>
     </footer>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        duration: 800,
+        once: true,
+      });
+    </script>
 </body>
 
 
