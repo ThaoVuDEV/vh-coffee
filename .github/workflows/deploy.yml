@@ -11,14 +11,27 @@ jobs:
       - name: SSH and deploy
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{ secrets.SSH_HOST }}        
-          username: ${{ secrets.SSH_USER }}    
-          key: ${{ secrets.SSH_KEY }}          
-          port: ${{ secrets.SSH_PORT }}        
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script_stop: true
           script: |
             set -e
-            cd "${{ secrets.APP_DIR }}"      
+            echo "🚀 Deploying on $(hostname)..."
+            echo "Current user: $(whoami)"
+
+            # Nạp và ép dùng Node 22
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            nvm use 22 || nvm install 22
+            echo "Node version: $(node -v)"
+            echo "NPM version: $(npm -v)"
+
+            cd "${{ secrets.APP_DIR }}"
             git fetch --all
             git reset --hard origin/main
+
             npm run build
+
+            echo "✅ Done!"
