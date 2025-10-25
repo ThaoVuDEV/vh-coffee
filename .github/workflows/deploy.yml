@@ -1,0 +1,24 @@
+name: Pull & Build on Server (root@103.232.120.45)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH and deploy
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}        
+          username: ${{ secrets.SSH_USER }}    
+          key: ${{ secrets.SSH_KEY }}          
+          port: ${{ secrets.SSH_PORT }}        
+          script_stop: true
+          script: |
+            set -e
+            cd "${{ secrets.APP_DIR }}"        # /var/www/prep4u
+            git fetch --all
+            git reset --hard origin/main
+            npm run build
